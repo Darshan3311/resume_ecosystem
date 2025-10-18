@@ -1,6 +1,8 @@
 package com.zidio_task.resume.resume_ecosystem.service;
 
-import com.zidio_task.resume.resume_ecosystem.dto.DTOs;
+import com.zidio_task.resume.resume_ecosystem.dto.AuthResponse;
+import com.zidio_task.resume.resume_ecosystem.dto.RegisterRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.LoginRequest;
 import com.zidio_task.resume.resume_ecosystem.entity.User;
 import com.zidio_task.resume.resume_ecosystem.exception.ValidationException;
 import com.zidio_task.resume.resume_ecosystem.repository.UserRepository;
@@ -26,7 +28,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
 
-    public DTOs.AuthResponse register(DTOs.RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new ValidationException("Email is already registered");
         }
@@ -57,7 +59,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.generateToken(authentication);
 
-        return new DTOs.AuthResponse(
+        return new AuthResponse(
                 token,
                 "Bearer",
                 savedUser.getId(),
@@ -68,7 +70,7 @@ public class AuthService {
         );
     }
 
-    public DTOs.AuthResponse login(DTOs.LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
@@ -79,7 +81,7 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ValidationException("User not found"));
 
-        return new DTOs.AuthResponse(
+        return new AuthResponse(
                 token,
                 "Bearer",
                 user.getId(),
@@ -90,4 +92,3 @@ public class AuthService {
         );
     }
 }
-

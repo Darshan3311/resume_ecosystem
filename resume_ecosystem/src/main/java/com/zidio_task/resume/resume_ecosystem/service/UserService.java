@@ -1,6 +1,10 @@
 package com.zidio_task.resume.resume_ecosystem.service;
 
-import com.zidio_task.resume.resume_ecosystem.dto.DTOs;
+import com.zidio_task.resume.resume_ecosystem.dto.ProfileRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.WorkExperienceRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.ProjectRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.EducationRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.CertificationRequest;
 import com.zidio_task.resume.resume_ecosystem.entity.User;
 import com.zidio_task.resume.resume_ecosystem.exception.ResourceNotFoundException;
 import com.zidio_task.resume.resume_ecosystem.repository.UserRepository;
@@ -24,7 +28,7 @@ public class UserService {
     }
 
     // Profile Operations
-    public User updateProfile(String userId, DTOs.ProfileRequest request) {
+    public User updateProfile(String userId, ProfileRequest request) {
         User user = getUserById(userId);
 
         User.Profile profile = user.getProfile();
@@ -47,7 +51,7 @@ public class UserService {
     }
 
     // Work Experience Operations
-    public User addWorkExperience(String userId, DTOs.WorkExperienceRequest request) {
+    public User addWorkExperience(String userId, WorkExperienceRequest request) {
         User user = getUserById(userId);
 
         User.WorkExperience experience = new User.WorkExperience();
@@ -69,7 +73,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateWorkExperience(String userId, String expId, DTOs.WorkExperienceRequest request) {
+    public User updateWorkExperience(String userId, String expId, WorkExperienceRequest request) {
         User user = getUserById(userId);
 
         User.WorkExperience experience = user.getWorkExperience().stream()
@@ -104,7 +108,7 @@ public class UserService {
     }
 
     // Project Operations
-    public User addProject(String userId, DTOs.ProjectRequest request) {
+    public User addProject(String userId, ProjectRequest request) {
         User user = getUserById(userId);
 
         User.Project project = new User.Project();
@@ -126,7 +130,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateProject(String userId, String projectId, DTOs.ProjectRequest request) {
+    public User updateProject(String userId, String projectId, ProjectRequest request) {
         User user = getUserById(userId);
 
         User.Project project = user.getProjects().stream()
@@ -161,7 +165,7 @@ public class UserService {
     }
 
     // Education Operations
-    public User addEducation(String userId, DTOs.EducationRequest request) {
+    public User addEducation(String userId, EducationRequest request) {
         User user = getUserById(userId);
 
         User.Education education = new User.Education();
@@ -184,7 +188,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateEducation(String userId, String eduId, DTOs.EducationRequest request) {
+    public User updateEducation(String userId, String eduId, EducationRequest request) {
         User user = getUserById(userId);
 
         User.Education education = user.getEducation().stream()
@@ -220,7 +224,7 @@ public class UserService {
     }
 
     // Certification Operations
-    public User addCertification(String userId, DTOs.CertificationRequest request) {
+    public User addCertification(String userId, CertificationRequest request) {
         User user = getUserById(userId);
 
         User.Certification certification = new User.Certification();
@@ -240,7 +244,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateCertification(String userId, String certId, DTOs.CertificationRequest request) {
+    public User updateCertification(String userId, String certId, CertificationRequest request) {
         User user = getUserById(userId);
 
         User.Certification certification = user.getCertifications().stream()

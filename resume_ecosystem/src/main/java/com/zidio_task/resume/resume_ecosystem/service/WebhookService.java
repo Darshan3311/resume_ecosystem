@@ -1,7 +1,13 @@
 package com.zidio_task.resume.resume_ecosystem.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zidio_task.resume.resume_ecosystem.dto.DTOs;
+import com.zidio_task.resume.resume_ecosystem.dto.WebhookRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.ProjectRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.WorkExperienceRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.CertificationRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.EducationRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.SkillRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.ProfileRequest;
 import com.zidio_task.resume.resume_ecosystem.entity.User;
 import com.zidio_task.resume.resume_ecosystem.exception.UnauthorizedException;
 import com.zidio_task.resume.resume_ecosystem.exception.ValidationException;
@@ -19,7 +25,7 @@ public class WebhookService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
-    public User processAchievement(DTOs.WebhookRequest request) {
+    public User processAchievement(WebhookRequest request) {
         // Verify webhook secret
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new ValidationException("User not found"));
@@ -55,7 +61,7 @@ public class WebhookService {
     }
 
     private User addProjectFromWebhook(User user, String achievementData) throws Exception {
-        DTOs.ProjectRequest projectRequest = objectMapper.readValue(achievementData, DTOs.ProjectRequest.class);
+        ProjectRequest projectRequest = objectMapper.readValue(achievementData, ProjectRequest.class);
 
         User.Project project = new User.Project();
         project.setId(UUID.randomUUID().toString());
@@ -77,7 +83,7 @@ public class WebhookService {
     }
 
     private User addWorkExperienceFromWebhook(User user, String achievementData) throws Exception {
-        DTOs.WorkExperienceRequest expRequest = objectMapper.readValue(achievementData, DTOs.WorkExperienceRequest.class);
+        WorkExperienceRequest expRequest = objectMapper.readValue(achievementData, WorkExperienceRequest.class);
 
         User.WorkExperience experience = new User.WorkExperience();
         experience.setId(UUID.randomUUID().toString());
@@ -99,7 +105,7 @@ public class WebhookService {
     }
 
     private User addCertificationFromWebhook(User user, String achievementData) throws Exception {
-        DTOs.CertificationRequest certRequest = objectMapper.readValue(achievementData, DTOs.CertificationRequest.class);
+        CertificationRequest certRequest = objectMapper.readValue(achievementData, CertificationRequest.class);
 
         User.Certification certification = new User.Certification();
         certification.setId(UUID.randomUUID().toString());
@@ -119,7 +125,7 @@ public class WebhookService {
     }
 
     private User addEducationFromWebhook(User user, String achievementData) throws Exception {
-        DTOs.EducationRequest eduRequest = objectMapper.readValue(achievementData, DTOs.EducationRequest.class);
+        EducationRequest eduRequest = objectMapper.readValue(achievementData, EducationRequest.class);
 
         User.Education education = new User.Education();
         education.setId(UUID.randomUUID().toString());
@@ -142,7 +148,7 @@ public class WebhookService {
     }
 
     private User addSkillsFromWebhook(User user, String achievementData) throws Exception {
-        DTOs.SkillRequest skillRequest = objectMapper.readValue(achievementData, DTOs.SkillRequest.class);
+        SkillRequest skillRequest = objectMapper.readValue(achievementData, SkillRequest.class);
 
         for (String skill : skillRequest.getSkills()) {
             if (!user.getSkills().contains(skill)) {
@@ -155,7 +161,7 @@ public class WebhookService {
     }
 
     private User updateProfileFromWebhook(User user, String achievementData) throws Exception {
-        DTOs.ProfileRequest profileRequest = objectMapper.readValue(achievementData, DTOs.ProfileRequest.class);
+        ProfileRequest profileRequest = objectMapper.readValue(achievementData, ProfileRequest.class);
 
         User.Profile profile = user.getProfile();
         if (profileRequest.getFirstName() != null) profile.setFirstName(profileRequest.getFirstName());

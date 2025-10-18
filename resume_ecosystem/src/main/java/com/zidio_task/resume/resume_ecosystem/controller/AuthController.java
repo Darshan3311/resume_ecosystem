@@ -1,6 +1,9 @@
 package com.zidio_task.resume.resume_ecosystem.controller;
 
-import com.zidio_task.resume.resume_ecosystem.dto.DTOs;
+import com.zidio_task.resume.resume_ecosystem.dto.ApiResponse;
+import com.zidio_task.resume.resume_ecosystem.dto.AuthResponse;
+import com.zidio_task.resume.resume_ecosystem.dto.RegisterRequest;
+import com.zidio_task.resume.resume_ecosystem.dto.LoginRequest;
 import com.zidio_task.resume.resume_ecosystem.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,26 +23,25 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(summary = "Register a new user", description = "Create a new user account with email and password")
-    public ResponseEntity<DTOs.ApiResponse<DTOs.AuthResponse>> register(
-            @Valid @RequestBody DTOs.RegisterRequest request) {
+    public ResponseEntity<ApiResponse<AuthResponse>> register(
+            @Valid @RequestBody RegisterRequest request) {
 
-        DTOs.AuthResponse response = authService.register(request);
+        AuthResponse response = authService.register(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new DTOs.ApiResponse<>(true, "User registered successfully", response)
+                new ApiResponse<>(true, "User registered successfully", response)
         );
     }
 
     @PostMapping("/login")
     @Operation(summary = "Login user", description = "Authenticate user and receive JWT token")
-    public ResponseEntity<DTOs.ApiResponse<DTOs.AuthResponse>> login(
-            @Valid @RequestBody DTOs.LoginRequest request) {
+    public ResponseEntity<ApiResponse<AuthResponse>> login(
+            @Valid @RequestBody LoginRequest request) {
 
-        DTOs.AuthResponse response = authService.login(request);
+        AuthResponse response = authService.login(request);
 
         return ResponseEntity.ok(
-                new DTOs.ApiResponse<>(true, "Login successful", response)
+                new ApiResponse<>(true, "Login successful", response)
         );
     }
 }
-

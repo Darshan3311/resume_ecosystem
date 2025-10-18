@@ -1,6 +1,7 @@
 package com.zidio_task.resume.resume_ecosystem.controller;
 
-import com.zidio_task.resume.resume_ecosystem.dto.DTOs;
+import com.zidio_task.resume.resume_ecosystem.dto.ApiResponse;
+import com.zidio_task.resume.resume_ecosystem.dto.WebhookRequest;
 import com.zidio_task.resume.resume_ecosystem.entity.User;
 import com.zidio_task.resume.resume_ecosystem.service.WebhookService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,14 +26,13 @@ public class WebhookController {
                      "Requires valid webhook secret for authentication. " +
                      "Supports: projects, work_experience, certifications, education, skills"
     )
-    public ResponseEntity<DTOs.ApiResponse<User>> processAchievement(
-            @Valid @RequestBody DTOs.WebhookRequest request) {
+    public ResponseEntity<ApiResponse<User>> processAchievement(
+            @Valid @RequestBody WebhookRequest request) {
 
         User user = webhookService.processAchievement(request);
 
         return ResponseEntity.ok(
-                new DTOs.ApiResponse<>(true, "Achievement processed successfully", user)
+                new ApiResponse<>(true, "Achievement processed successfully", user)
         );
     }
 }
-
