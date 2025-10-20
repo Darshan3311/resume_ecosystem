@@ -19,6 +19,18 @@ public class WebhookController {
 
     private final WebhookService webhookService;
 
+    @GetMapping("/health")
+    @Operation(
+        summary = "Health check endpoint",
+        description = "Check if webhook service is running and healthy"
+    )
+    public ResponseEntity<ApiResponse<Object>> healthCheck() {
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "Webhook service is healthy", 
+                    java.util.Map.of("status", "UP", "timestamp", java.time.LocalDateTime.now()))
+        );
+    }
+
     @PostMapping("/achievement")
     @Operation(
         summary = "Process external achievement",
