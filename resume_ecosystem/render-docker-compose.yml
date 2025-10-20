@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  resume-api:
+    image: darshan3311/resume-builder-api:latest
+    ports:
+      - "10000:8080"
+    environment:
+      # MongoDB Configuration (Use MongoDB Atlas for production)
+      SPRING_DATA_MONGODB_URI: ${MONGODB_URI}
+      SPRING_DATA_MONGODB_DATABASE: resume_db
+      
+      # JWT Configuration
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: 86400000
+      
+      # Application Configuration
+      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: 8080
+      
+      # Logging
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_COM_ZIDIO_TASK: INFO
+    restart: unless-stopped

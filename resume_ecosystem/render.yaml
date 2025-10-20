@@ -1,0 +1,36 @@
+{
+  "name": "resume-builder-api",
+  "region": "oregon",
+  "plan": "free",
+  "env": "docker",
+  "services": [
+    {
+      "type": "web",
+      "name": "resume-builder-api",
+      "env": "docker",
+      "repo": "https://github.com/Darshan3311/resume_ecosystem",
+      "branch": "main",
+      "dockerfilePath": "./Dockerfile.render",
+      "dockerContext": ".",
+      "healthCheckPath": "/api/hooks/health",
+      "envVars": [
+        {
+          "key": "SPRING_DATA_MONGODB_URI",
+          "sync": false
+        },
+        {
+          "key": "JWT_SECRET",
+          "generateValue": true
+        },
+        {
+          "key": "SPRING_PROFILES_ACTIVE",
+          "value": "prod"
+        },
+        {
+          "key": "PORT",
+          "value": "10000"
+        }
+      ]
+    }
+  ]
+}
