@@ -1,0 +1,165 @@
+# API Sample Requests (Minimal)
+
+Note: Use the Authorization header "Authorization: Bearer <JWT_TOKEN>" for endpoints that require authentication (most /api/* routes except /api/auth/*; webhook achievement requires a valid webhookSecret in the body).
+
+Placeholder values used:
+- <JWT_TOKEN> — token returned from /api/auth/login
+- <USER_ID> — user id from registration/login responses
+- <EXP_ID>, <PROJECT_ID>, <EDU_ID>, <CERT_ID> — IDs returned by create endpoints (use them for update/delete)
+
+1) Register (POST /api/auth/register)
+{
+  "email": "darshan.jadhav@example.com",
+  "password": "Password123",
+  "firstName": "Darshan",
+  "lastName": "Sudhakar Jadhav"
+}
+
+2) Login (POST /api/auth/login)
+{
+  "email": "darshan.jadhav@example.com",
+  "password": "Password123"
+}
+
+3) Get full resume (GET /api/resume/{userId})  [Auth required]
+No request body — provide Authorization header and replace {userId} with <USER_ID>
+
+4) Update Profile (PUT /api/resume/{userId}/profile)  [Auth required]
+{
+  "firstName": "Darshan",
+  "lastName": "Jadhav",
+  "headline": "Java Full Stack Developer",
+  "summary": "Passionate Java Full Stack Developer with experience in building scalable web applications using Spring Boot, React, and MySQL. Skilled in backend API development, frontend integration, and cloud deployment.",
+  "phone": "+91-9876543210",
+  "email": "darshan@gmail.com",
+  "linkedinUrl": "https://www.linkedin.com/in/darshanjadhav",
+  "githubUrl": "https://github.com/darshanjadhav",
+  "portfolioUrl": "https://darshanjadhav.dev",
+  "profileImageUrl": "https://example.com/profile-image.jpg",
+  "location": "Pune, India"
+}
+
+5) Add Work Experience (POST /api/resume/{userId}/experience)  [Auth required]
+{
+  "jobTitle": "Java Developer",
+  "company": "Zidio Technologies",
+  "location": "Pune, India",
+  "startDate": "2024-07-01T09:00:00",
+  "endDate": "2025-09-30T18:00:00",
+  "currentlyWorking": false,
+  "description": "Worked on backend development, API design, and database management using Java and Spring Boot.",
+  "achievements": [
+    "Implemented RESTful APIs for multiple modules",
+    "Optimized database queries reducing response time by 30%",
+    "Integrated JWT authentication for secure access"
+  ]
+}
+
+6) Update Work Experience (PUT /api/resume/{userId}/experience/{expId})  [Auth required]
+Use same body shape as Add Work Experience (replace fields as needed)
+
+7) Delete Work Experience (DELETE /api/resume/{userId}/experience/{expId})  [Auth required]
+No request body
+
+8) Add Project (POST /api/resume/{userId}/projects)  [Auth required]
+{
+  "projectName": "Resume Builder API",
+  "description": "A backend API to create and manage resumes with user authentication and project management features.",
+  "technologies": [
+    "Java",
+    "Spring Boot",
+    "MySQL",
+    "Docker"
+  ],
+  "projectUrl": "https://example.com/resume-builder",
+  "sourceCodeUrl": "https://github.com/darshan/resume-builder-api",
+  "startDate": "2025-09-01T09:00:00",
+  "endDate": "2025-10-15T18:00:00",
+  "achievements": [
+    "Implemented JWT-based authentication",
+    "Designed RESTful APIs for CRUD operations",
+    "Integrated Docker for deployment"
+  ]
+}
+
+9) Update Project (PUT /api/resume/{userId}/projects/{projectId})  [Auth required]
+Use same body shape as Add Project
+
+10) Delete Project (DELETE /api/resume/{userId}/projects/{projectId})  [Auth required]
+No request body
+
+11) Add Education (POST /api/resume/{userId}/education)  [Auth required]
+{
+  "degree": "Bachelor of Technology",
+  "fieldOfStudy": "Computer Science",
+  "institution": "University of Pune",
+  "location": "Pune, India",
+  "startDate": "2018-08-01T09:00:00",
+  "endDate": "2022-05-31T18:00:00",
+  "gpa": 8.7,
+  "description": "Completed undergraduate program with focus on software development, algorithms, and database systems.",
+  "achievements": [
+    "Graduated with distinction",
+    "Member of coding club and organized hackathons",
+    "Completed a capstone project on Resume Builder API"
+  ]
+}
+
+12) Update Education (PUT /api/resume/{userId}/education/{eduId})  [Auth required]
+Use same body shape as Add Education
+
+13) Delete Education (DELETE /api/resume/{userId}/education/{eduId})  [Auth required]
+No request body
+
+14) Add Certification (POST /api/resume/{userId}/certifications})  [Auth required]
+{
+  "name": "Oracle Certified Java Programmer",
+  "issuingOrganization": "Oracle",
+  "issueDate": "2022-08-01T00:00:00",
+  "expiryDate": "2025-08-01T00:00:00",
+  "credentialId": "OCJP-123456",
+  "credentialUrl": "https://www.example.com/cert/OCJP-123456"
+}
+
+15) Update Certification (PUT /api/resume/{userId}/certifications/{certId})  [Auth required]
+Use same body shape as Add Certification
+
+16) Delete Certification (DELETE /api/resume/{userId}/certifications/{certId})  [Auth required]
+No request body
+
+17) Replace entire skills list (PUT /api/resume/{userId}/skills)  [Auth required]
+Request body is a JSON array of strings:
+[
+  "Java",
+  "Python",
+  "C",
+  "C++",
+  "HTML",
+  "CSS"
+]
+
+18) Add single skill (POST /api/resume/{userId}/skills)  [Auth required]
+Request body is a plain JSON string (single skill). Example body:
+"Docker"
+
+19) Delete single skill (DELETE /api/resume/{userId}/skills/{skill})  [Auth required]
+No request body; URL-encode the skill if needed (e.g., "C%2B%2B").
+
+20) Webhook health (GET /api/hooks/health)
+No request body — returns a small status payload to indicate the webhook service is up.
+
+21) Webhook achievement (POST /api/hooks/achievement)  [Requires webhookSecret in body]
+{
+  "userId": "68f5d505d301da5ea43bb91b",
+  "achievementType": "project",
+  "achievementData": "{\"projectName\": \"Auto Imported Project\", \"description\": \"Imported via webhook\"}",
+  "webhookSecret": ""
+}
+
+---
+Notes:
+- Replace <JWT_TOKEN> with the token returned by login.
+- Replace <USER_ID> with the userId returned in AuthResponse after register/login.
+- Replace <EXP_ID>, <PROJECT_ID>, <EDU_ID>, <CERT_ID> with IDs returned from create endpoints when updating/deleting.
+- Date/time fields use ISO-8601 (LocalDateTime) format: YYYY-MM-DDThh:mm:ss
+- All array fields should be JSON arrays of strings as shown.
